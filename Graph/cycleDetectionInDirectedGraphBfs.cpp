@@ -1,65 +1,50 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-void createAdjList(const vector<pair<int, int>> &edge, unordered_map<int, list<int>> &adj)
-{
-    for (const auto &e : edge)
-    {
-        int u = e.first;
-        int v = e.second;
+bool detectCycleInDirectedGraph(vector<pair<int, int>> edges){
+    unordered_map<int, list<int>> adj;
+    for(auto edge: edges){
+        int u = edge.first;
+        int v = edge.second;
 
         adj[u].push_back(v);
 
-        if (adj.find(v) == adj.end())
+        if(adj.find(v) == adj.end())
             adj[v] = {};
     }
-}
 
-bool checkCycleDfs(int node, unordered_map<int, bool> &visited, unordered_map<int, bool> &dfsVisited, const unordered_map<int, list<int>> &adj)
-{
-    visited[node] = true;
-    dfsVisited[node] = true;
-
-    for (auto neighbour : adj.at(node))
-    {
-        if (!visited[neighbour])
-        {
-            if (checkCycleDfs(neighbour, visited, dfsVisited, adj))
-            {
-                return true;
-            }
-        }
-        else if (dfsVisited[neighbour]) // Corrected condition
-        {
-            return true;
+    unordered_map<int, int> indegree;
+    for(auto i: adj){
+        for(auto j: i.second){
+            indegree[j]++;
         }
     }
 
-    dfsVisited[node] = false;
-    return false;
-}
+    queue<int> q;
+    for(auto node: adj){
+        if(indegree[node.first] == 0){
+            q.push(node.first);
+        }
+    }
 
-bool detectCycleInDirectedGraph(vector<pair<int, int>> &edge)
-{
-    unordered_map<int, list<int>> adj;
-    createAdjList(edge, adj);
+    int cnt = 0;
+    while(!q.empty()){
+        int front = q.front();
+        q.pop();
 
-    unordered_map<int, bool> visited;
-    unordered_map<int, bool> dfsVisited;
-
-    for (const auto &node : adj) // Iterate through keys of adjacency list
-    {
-        if (!visited[node.first])
-        {
-            if (checkCycleDfs(node.first, visited, dfsVisited, adj))
-            {
-                return true;
+        cnt++;
+        for(auto neighbour: adj[front]){
+            indegree[neighbour]--;
+            if(indegree[neighbour] == 0){
+                q.push(neighbour);
             }
         }
     }
-    return false;
+
+    return (cnt != adj.size());
 }
 
+    
 int main()
 {
     // Test Case 1: Graph with a cycle
@@ -88,3 +73,4 @@ int main()
 
     return 0;
 }
+
