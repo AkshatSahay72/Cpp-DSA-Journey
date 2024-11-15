@@ -1,33 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void createAdjList(vector<pair<int, int>> edge, unordered_map<int, list<int>> &adj)
+void createAdjList(const vector<pair<int, int>> &edge, unordered_map<int, list<int>> &adj)
 {
-    for (int i = 0; i < edge.size(); i++)
+    for (const auto &e : edge)
     {
-        int u = edge[i].first;
-        int v = edge[i].second;
+        int u = e.first;
+        int v = e.second;
 
         adj[u].push_back(v);
     }
 }
 
-bool checkCycleDfs(int node, unordered_map<int, bool> &visited, unordered_map<int, bool> &dfsVisited, unordered_map<int, list<int>> adj)
+bool checkCycleDfs(int node, unordered_map<int, bool> &visited, unordered_map<int, bool> &dfsVisited, const unordered_map<int, list<int>> &adj)
 {
     visited[node] = true;
     dfsVisited[node] = true;
 
-    for (auto neighbour : adj[node])
+    for (auto neighbour : adj.at(node))
     {
         if (!visited[neighbour])
         {
-            bool cycleFound = checkCycleDfs(neighbour, visited, dfsVisited, adj);
-            if (cycleFound)
+            if (checkCycleDfs(neighbour, visited, dfsVisited, adj))
             {
                 return true;
             }
         }
-        else if (dfsVisited[node])
+        else if (dfsVisited[neighbour]) // Corrected condition
         {
             return true;
         }
@@ -40,18 +39,16 @@ bool checkCycleDfs(int node, unordered_map<int, bool> &visited, unordered_map<in
 bool detectCycleInDirectedGraph(vector<pair<int, int>> &edge)
 {
     unordered_map<int, list<int>> adj;
-
     createAdjList(edge, adj);
 
     unordered_map<int, bool> visited;
     unordered_map<int, bool> dfsVisited;
 
-    for (int i = 1; i <= adj.size(); i++)
+    for (const auto &node : adj) // Iterate through keys of adjacency list
     {
-        if (!visited[i])
+        if (!visited[node.first])
         {
-            bool cycleFound = checkCycleDfs(i, visited, dfsVisited, adj);
-            if (cycleFound)
+            if (checkCycleDfs(node.first, visited, dfsVisited, adj))
             {
                 return true;
             }
@@ -62,6 +59,29 @@ bool detectCycleInDirectedGraph(vector<pair<int, int>> &edge)
 
 int main()
 {
-    vector<pair<int, int>> edge = {{1, 2}, {2, 4}, {3, 7}, {3, 8}, {4, 5}, {5, 6}, {6, 4}};
-    cout << detectCycleInDirectedGraph(edge);
+    // Test Case 1: Graph with a cycle
+    vector<pair<int, int>> edges1 = {{1, 2}, {2, 3}, {3, 4}, {4, 2}};
+    cout << "Test Case 1 (Cyclic): " << (detectCycleInDirectedGraph(edges1) ? "Cycle Detected" : "No Cycle") << endl;
+
+    // Test Case 2: Acyclic graph
+    vector<pair<int, int>> edges2 = {{1, 2}, {2, 3}, {3, 4}};
+    cout << "Test Case 2 (Acyclic): " << (detectCycleInDirectedGraph(edges2) ? "Cycle Detected" : "No Cycle") << endl;
+
+    // Test Case 3: Graph with multiple disconnected components, one cyclic
+    vector<pair<int, int>> edges3 = {{1, 2}, {2, 3}, {3, 1}, {4, 5}, {5, 6}};
+    cout << "Test Case 3 (Mixed): " << (detectCycleInDirectedGraph(edges3) ? "Cycle Detected" : "No Cycle") << endl;
+
+    // Test Case 4: Graph with no edges
+    vector<pair<int, int>> edges4 = {};
+    cout << "Test Case 4 (Empty Graph): " << (detectCycleInDirectedGraph(edges4) ? "Cycle Detected" : "No Cycle") << endl;
+
+    // Test Case 5: Single node with a self-loop
+    vector<pair<int, int>> edges5 = {{1, 1}};
+    cout << "Test Case 5 (Self-loop): " << (detectCycleInDirectedGraph(edges5) ? "Cycle Detected" : "No Cycle") << endl;
+
+    // Test Case 6: Larger acyclic graph
+    vector<pair<int, int>> edges6 = {{1, 2}, {2, 3}, {3, 4}, {4, 5}, {6, 7}, {7, 8}};
+    cout << "Test Case 6 (Larger Acyclic): " << (detectCycleInDirectedGraph(edges6) ? "Cycle Detected" : "No Cycle") << endl;
+
+    return 0;
 }
