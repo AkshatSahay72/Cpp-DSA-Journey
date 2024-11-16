@@ -1,9 +1,11 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> shortestPath(vector<pair<int, int>> edges, int src, int dest){
+vector<int> shortestPath(vector<pair<int, int>> edges, int src, int dest)
+{
     unordered_map<int, list<int>> adj;
-    for(auto edge: edges){
+    for (auto edge : edges)
+    {
         int u = edge.first;
         int v = edge.second;
 
@@ -20,12 +22,15 @@ vector<int> shortestPath(vector<pair<int, int>> edges, int src, int dest){
 
     visited[src] = 1;
 
-    while(!q.empty()){
+    while (!q.empty())
+    {
         int front = q.front();
         q.pop();
 
-        for(auto neighbour: adj[front]){
-            if(!visited[neighbour] ){
+        for (auto neighbour : adj[front])
+        {
+            if (!visited[neighbour])
+            {
                 visited[neighbour] = true;
                 parent[neighbour] = front;
                 q.push(neighbour);
@@ -38,23 +43,24 @@ vector<int> shortestPath(vector<pair<int, int>> edges, int src, int dest){
 
     ans.push_back(cur);
 
-    while(cur != src){
+    while (cur != src)
+    {
         cur = parent[cur];
         ans.push_back(cur);
     }
     reverse(ans.begin(), ans.end());
     return ans;
-
 }
 
-
-int main(){
+int main()
+{
     vector<pair<int, int>> edge1 = {{1, 2}, {2, 5}, {5, 8}, {1, 3}, {3, 8}, {1, 4}, {4, 6}, {6, 7}, {7, 8}};
     int src = 1;
     int dest = 8;
     vector<int> ans1 = shortestPath(edge1, src, dest);
     cout << "Shortest Path from " << src << " to " << dest << ": ";
-    for(auto ele: ans1){
+    for (auto ele : ans1)
+    {
         cout << ele << " ";
     }
     cout << endl;
@@ -65,7 +71,8 @@ int main(){
     dest = 5;
     vector<int> ans2 = shortestPath(edge2, src, dest);
     cout << "Shortest Path from " << src << " to " << dest << ": ";
-    for(auto ele: ans2){
+    for (auto ele : ans2)
+    {
         cout << ele << " ";
     }
     cout << endl;
@@ -76,7 +83,8 @@ int main(){
     dest = 5;
     vector<int> ans3 = shortestPath(edge3, src, dest);
     cout << "Shortest Path from " << src << " to " << dest << ": ";
-    for(auto ele: ans3){
+    for (auto ele : ans3)
+    {
         cout << ele << " ";
     }
     cout << endl;
@@ -87,7 +95,8 @@ int main(){
     dest = 5;
     vector<int> ans4 = shortestPath(edge4, src, dest);
     cout << "Shortest Path from " << src << " to " << dest << ": ";
-    for(auto ele: ans4){
+    for (auto ele : ans4)
+    {
         cout << ele << " ";
     }
     cout << endl;
