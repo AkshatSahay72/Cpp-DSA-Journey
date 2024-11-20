@@ -32,10 +32,13 @@ class CircularSinglyLinkedList{
 
         void printList(){
             Node *helper = head;
-            while(helper->next!=head){
+            if(!head){
+                cout << "List is empty" << endl;
+            }
+            do{
                 cout << helper->val << "->";
                 helper = helper->next;
-            }
+            } while (helper != head);
             cout << "HEAD" << endl;
         }
 
@@ -79,6 +82,14 @@ class CircularSinglyLinkedList{
 
             Node *helper = head;
             Node *toBeDeleted;
+
+            if (head->next == head) {
+
+                free(head);
+                head = NULL;
+                return;
+            }
+
 
             if(pos == 0){
                 toBeDeleted = head;
@@ -128,6 +139,7 @@ class CircularSinglyLinkedList{
             cout << "1. Insertion" << endl;
             cout << "2. Deletion" << endl;
             cout << "3. Updation" << endl;
+            cout << "-1. Exiting" << endl;
             cout << endl;
         }
 };

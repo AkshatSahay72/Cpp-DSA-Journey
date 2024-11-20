@@ -103,6 +103,7 @@ class SinglyLinkedList{
             cout << "1. Insertion" << endl;
             cout << "2. Deletion" << endl;
             cout << "3. Updation" << endl;
+            cout << "-1. Exiting" << endl;
             cout << endl;
         }
 };
