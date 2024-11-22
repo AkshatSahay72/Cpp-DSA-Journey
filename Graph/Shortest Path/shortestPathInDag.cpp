@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void dfs(int node, unordered_map<int, bool> &visited, stack<int> &s, unordered_map<int, list<pair<int, int>>> adj)
+void dfs(int node, unordered_map<int, bool> &visited, stack<int> &s, unordered_map<int, list<pair<int, int>>> &adj)
 {
     visited[node] = true;
 
@@ -15,22 +15,27 @@ void dfs(int node, unordered_map<int, bool> &visited, stack<int> &s, unordered_m
     s.push(node);
 }
 
+
 vector<int> shortestPath(unordered_map<int, list<pair<int, int>>> adj, int src)
 {
-
     unordered_map<int, bool> visited;
     stack<int> s;
 
-    for (int i = 0; i < adj.size(); i++)
+    // Topological sort for all nodes in the graph
+    for (auto &entry : adj)
     {
-        if (!visited[i])
+        int node = entry.first;
+        if (!visited[node])
         {
-            dfs(i, visited, s, adj);
+            dfs(node, visited, s, adj);
         }
     }
 
-    vector<int> dist(adj.size(), INT_MAX);
-
+    unordered_map<int, int> dist;
+    for (auto &entry : adj)
+    {
+        dist[entry.first] = INT_MAX;
+    }
     dist[src] = 0;
 
     while (!s.empty())
@@ -40,7 +45,7 @@ vector<int> shortestPath(unordered_map<int, list<pair<int, int>>> adj, int src)
 
         if (dist[top] != INT_MAX)
         {
-            for (auto i : adj[top])
+            for (auto &i : adj[top])
             {
                 if (dist[top] + i.second < dist[i.first])
                 {
@@ -50,7 +55,13 @@ vector<int> shortestPath(unordered_map<int, list<pair<int, int>>> adj, int src)
         }
     }
 
-    return dist;
+    // Convert distances to a vector for consistent output
+    vector<int> result;
+    for (auto &entry : adj)
+    {
+        result.push_back(dist[entry.first]);
+    }
+    return result;
 }
 
 int main()
