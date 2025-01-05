@@ -1,64 +1,52 @@
-#include<bits/stdc++.h>
+#include<iostream>
 using namespace std;
 
-vector<int> shortest(vector<int> adj[], int v, int src, int dest){
-    vector<int> ans;
-    vector<bool> visited(v, 0);
-    vector<int> parent(v, -1);
+void insert(int arr[], int n, int &size, int val){
+    arr[size] = val;
+    int i = size;
+    size++;
 
-    queue<int> q;
-    q.push(src);
-    visited[src] = 1;
-
-    while(!q.empty()){
-        int front = q.front();
-        q.pop();
-        for(auto j: adj[front]){
-            if(!visited[j]){
-                q.push(j);
-                parent[j] = front;
-                visited[j] = true;
-            }
-        }
+    while (i > size && arr[(i-1)/2]<arr[i]){
+        swap(arr[i], arr[(i - 1) / 2]);
+        i = (i - 1) / 2; 
     }
-
-        
-
-    int cur = dest;
-
-    while(cur!=-1){
-
-        ans.push_back(cur);
-        cur = parent[cur];
-    }
-
-    if (ans.back() != src) {
-        return {}; // Return empty vector if no path exists
-    }
-    reverse(ans.begin(), ans.end());
-
-    return ans;
 }
 
-int main() {
-    int V = 9;
-    vector<int> edge1[V] = {{1, 2}, {2, 5}, {5, 8}, {1, 3}, {3, 8u}, {1, 4}, {4, 6}, {6, 7}, {7, 8}};
-    vector<int> adj[V];
-    for (int i = 0; i < V; i++) {
-        if (!edge1[i].empty()) {
-            int u = edge1[i][0];
-            int v = edge1[i][1];
-            adj[u].push_back(v);
-            adj[v].push_back(u); // Assuming undirected graph
-        }
+void heapify(int arr[], int n, int i){
+    int large = i;
+    int left = i / 2 + 1;
+    int right = i / 2 + 2;
+
+    if (left < n && arr[large]<arr[left]){
+        large = left;
     }
-    int src = 1;
-    int dest = 8;
-    vector<int> ans1 = shortest(adj, V, src, dest);
-    cout << "Shortest Path from " << src << " to " << dest << ": ";
-    for (auto ele : ans1)
-    {
-        cout << ele << " ";
+    if (right < n && arr[large]<arr[right]){
+        large = right;
     }
-    cout << endl;
+
+    if(i!=large){
+        swap(arr[i], arr[large]);
+        heapify(arr, n, large);
+    }
+}
+
+void heapSort(int arr[], int n){
+    for (int i = n - 1; i >= 0;i--){
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+
+
+int main()
+{
+    int n;
+    cin >> n;
+    int arr[n];
+    int size = 0;
+    for (int i = 0; i < n;i++){
+        int data;
+        cin >> data;
+        insert(arr, n, size, data);
+    }
 }

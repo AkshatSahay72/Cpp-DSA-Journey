@@ -19,6 +19,7 @@ void sorting(int arr[], int n)
     {
         cout << arr[i] << " ";
     }
+    cout << endl;
 }
 
 int main()
