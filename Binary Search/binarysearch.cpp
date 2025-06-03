@@ -10,7 +10,7 @@ int binsearch(int arr[], int n, int key)
   while (start <= end)
   {
 
-    int mid = (start + end) / 2; // Optimization = "s + (e-s)/2" for edge case
+    int mid = (start + end) / 2; // Optimization : "s + (e-s)/2" for edge case
 
     if (arr[mid] == key)
       return mid;
