@@ -6,7 +6,7 @@
 ## 📁 Folder Structure
 
 ```bash
-.
+Cpp-DSA
 ├── Array/           # Problems on arrays and tricks like two-pointer, kadane, etc.
 ├── Binary Search/   # Classic and advanced BS problems
 ├── Graph/           # BFS, DFS, Dijkstra, and more
