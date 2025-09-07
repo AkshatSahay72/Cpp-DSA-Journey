@@ -2,7 +2,7 @@
 #include<vector>
 using namespace std;
 
-int solve(vector<int> &weight, vector<int> &value, int index, int capacity, vector<vector<int>> dp){ 
+int solve(vector<int> &weight, vector<int> &value, int index, int capacity, vector<vector<int>> &dp){ 
     // Base Case
     if(index==0){
         if(weight[0]<=capacity){
