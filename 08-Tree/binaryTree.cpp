@@ -16,7 +16,6 @@ class TreeNode{
 };
 
 TreeNode* buildTree(TreeNode* root){
-    // cout << "Enter the data: " << endl;
     int data;
     cin >> data;
     root = new TreeNode(data);
@@ -25,9 +24,7 @@ TreeNode* buildTree(TreeNode* root){
         return NULL;
     }
 
-    // cout << "Enter data for Left child of " << data << endl;
     root->left = buildTree(root->left);
-    // cout << "Enter data for Right child of " << data << endl;
     root->right = buildTree(root->right);
     return root;
 } 
